@@ -3,14 +3,52 @@
 <head>
 	<title>Home</title>
 	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'belt_review_app/success.css' %}">
+	<link rel="stylesheet" href="{% static 'belt_review_app/home.css' %}">
 	
 </head>
 	<body>
 
 		<div id='header'>
-			<h1>Welcome {{current_user.name}}</h1>
+			<h1>Hello, {{current_user.alias}}!</h1>
 			<a href="/logout">Logout</a>
+		</div>
+		<div id="friends-list">
+		<h2>Here is the list of your friends:</h2>
+		{% if error == False%}
+			<p>You don't have a friend yet</p>
+		{% else %}
+			<table>
+				<tr>
+					<th>Alias</th>
+					<th>Action</th>
+				</tr>
+				{% for user in current_user.friends.all%}					
+				<tr>
+					<td>{{user.alias}}</td>
+					<td>
+						<a href="/userprofile/{{user.id}}">view profile</a>
+						<a href="/removeFriend/{{user.id}}">remove as a friend</a>
+					</td>
+				</tr>
+				{%endfor%}
+		{% endif %}			
+			</table>
+		</div>
+		<div id="not-friends">
+		<h2>Other users not in your friend list:</h2>
+		<table>
+				<tr>
+					<th>Alias</th>
+					<th>Action</th>
+				</tr>
+				{% for user in friends %}
+					<tr>
+						<td><a href="/userprofile/{{user.id}}">{{user.alias}}</a></td>
+						<td><a href="/addFriend/{{user.id}}"><button>Add as a friend</button></a></td>
+					</tr>
+				{% endfor %}			
+			</table>
+			
 		</div>
 
 	</body>

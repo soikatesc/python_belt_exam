@@ -12,15 +12,61 @@ def index(request):
 
 	return render(request, "belt_review_app/index.html")
 
-def home(request):
+def friends(request):
 	if 'user_id' not in request.session:
 		return redirect('/')
 
-	else:		
+	else:
+		error = True
+		# print(len(current_user.friends.all()))
+		if len(current_user(request).friends.all()) == 0:
+			error = False
+		print error
+
+		userfriend = []
+		for user in User.objects.all().exclude(friends=current_user(request)):
+			print user
+			if user != current_user(request):
+				userfriend.append(user)
+		print userfriend
+
+
 		context = {
-			"current_user": current_user(request)
+			"current_user": current_user(request),
+			# "friends": User.objects.all().exclude(friends=current_user(request)),
+			"error": error,
+			"friends": userfriend
 		}
 		return render(request, "belt_review_app/home.html",context)
+
+def addFriend(request,friendid):
+	friend = User.objects.get(id=friendid)
+	print friend
+	current_user(request).friends.add(friend)
+	
+	return redirect('/friends')
+
+def removeFriend(request,friendid):
+	print 'removeFriend'
+	friend = User.objects.get(id=friendid)
+	current_user(request).friends.remove(friend)
+	return redirect('/friends')
+
+def userprofile(request,userid):
+	if 'user_id' not in request.session:
+		return redirect('/')
+	else:
+		context = {
+			"current_user": current_user(request),
+			"user": User.objects.get(id=userid)
+		}
+
+		return render(request, "belt_review_app/userprofile.html",context)
+
+
+
+
+
 
 
 #creating new user
@@ -47,8 +93,7 @@ def createUser(request):
 				dateofbirth = dob_coverted
 			)
 			request.session['user_id'] = user.id
-		return redirect('/home')
-
+		return redirect('/friends')
 ##login
 def login(request):
 	if request.method != 'POST':
@@ -57,7 +102,7 @@ def login(request):
 		user = User.objects.filter(email= request.POST.get('email')).first()
 		if user and bcrypt.checkpw(request.POST.get('password').encode(),user.password.encode()):
 			request.session['user_id'] = user.id
-			return redirect('/home')
+			return redirect('/friends')
 		else:
 			messages.error(request,'invalid')
 			return redirect('/')
