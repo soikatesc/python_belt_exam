@@ -7,9 +7,7 @@ import datetime
 def current_user(request):
 	return User.objects.get(id=request.session['user_id'])
 
-
 def index(request):
-
 	return render(request, "belt_review_app/index.html")
 
 def friends(request):
@@ -18,22 +16,17 @@ def friends(request):
 
 	else:
 		error = True
-		# print(len(current_user.friends.all()))
 		if len(current_user(request).friends.all()) == 0:
 			error = False
-		print error
 
 		userfriend = []
 		for user in User.objects.all().exclude(friends=current_user(request)):
 			print user
 			if user != current_user(request):
 				userfriend.append(user)
-		print userfriend
-
 
 		context = {
 			"current_user": current_user(request),
-			# "friends": User.objects.all().exclude(friends=current_user(request)),
 			"error": error,
 			"friends": userfriend
 		}
@@ -41,13 +34,10 @@ def friends(request):
 
 def addFriend(request,friendid):
 	friend = User.objects.get(id=friendid)
-	print friend
-	current_user(request).friends.add(friend)
-	
+	current_user(request).friends.add(friend)	
 	return redirect('/friends')
 
 def removeFriend(request,friendid):
-	print 'removeFriend'
 	friend = User.objects.get(id=friendid)
 	current_user(request).friends.remove(friend)
 	return redirect('/friends')
@@ -57,13 +47,9 @@ def userprofile(request,userid):
 		return redirect('/')
 	else:
 		context = {
-			"current_user": current_user(request),
 			"user": User.objects.get(id=userid)
 		}
-
 		return render(request, "belt_review_app/userprofile.html",context)
-
-
 
 
 
@@ -109,7 +95,6 @@ def login(request):
 #logout
 def logout(request):
 	request.session.delete()
-	# request.session.pop('user_id', None)
 	return redirect('/')
 
 
