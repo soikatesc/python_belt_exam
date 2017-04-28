@@ -109,6 +109,7 @@ def login(request):
 #logout
 def logout(request):
 	request.session.delete()
+	# request.session.pop('user_id', None)
 	return redirect('/')
 
 
