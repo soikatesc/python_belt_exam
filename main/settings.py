@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+envp=os.environ.get('djangoEnv')
+# print os.environ.get('djangoEnv')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,9 +25,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'z4f+d)5b1c)q@i9!008e&z5hco8n(%g*^tirp5pd*9m=g=iv+b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if envp == 'deployment':
+    DEBUG=False
+    ALLOWED_HOSTS = ['*']
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = ['*']
+print DEBUG
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -119,3 +126,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+if envp=='deployment':
+    STATIC_ROOT = os.path.join(BASE_DIR, "static/")
