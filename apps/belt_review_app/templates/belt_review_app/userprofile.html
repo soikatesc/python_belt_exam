@@ -3,15 +3,24 @@
 <head>
 	<title>Friends name</title>
 	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'belt_review_app/userprofile.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
 </head>
 <body>
-<h1> {{user.alias}}'s Profile</h1>
-<a href="/friends">Home</a>
-<a href="/logout">Logout</a>
-<h2>Name: {{user.name}}</h2>
-<h2>Email Address: {{user.email}}</h2>
+	<nav>
+	    <div class="nav-wrapper">
+	      <a href="#" class="brand-logo">{{user.alias}}'s Profile</a>
+	      <ul id="nav-mobile" class="right hide-on-med-and-down">
+	        <li><a href="/friends">Home</a></li>
+	        <li><a href="/logout">Logout</a></li>	        
+	      </ul>
+	    </div>
+	</nav>
 
-
+	<div class="container">
+		<h4>Name: {{user.name}}</h4>
+		<h5>Email Address: {{user.email}}</h5>
+		<h5>Alias: {{user.alias}}</h5>
+	</div>
 </body>
 </html>

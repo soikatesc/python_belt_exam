@@ -4,51 +4,65 @@
 	<title>Home</title>
 	{% load staticfiles %}
 	<link rel="stylesheet" href="{% static 'belt_review_app/home.css' %}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+
 	
 </head>
 	<body>
+		<nav>
+	    <div class="nav-wrapper">
+	      <a href="#" class="brand-logo">Hello, {{current_user.alias}}!</a>
+	      <ul id="nav-mobile" class="right hide-on-med-and-down">
+	        <li><a href="/logout">Logout</a></li>	        
+	      </ul>
+	    </div>
+	  </nav>
 
-		<div id='header'>
-			<h1>Hello, {{current_user.alias}}!</h1>
-			<a href="/logout">Logout</a>
-		</div>
-		<div id="friends-list">
-		<h2>Here is the list of your friends:</h2>
-		{% if error == False%}
-			<p>You don't have a friend yet</p>
-		{% else %}
-			<table>
-				<tr>
-					<th>Alias</th>
-					<th>Action</th>
-				</tr>
-				{% for user in current_user.friends.all%}					
-				<tr>
-					<td>{{user.alias}}</td>
-					<td>
-						<a href="/userprofile/{{user.id}}">view profile</a>
-						<a href="/removeFriend/{{user.id}}">remove as a friend</a>
-					</td>
-				</tr>
-				{%endfor%}
-		{% endif %}			
-			</table>
-		</div>
-		<div id="not-friends">
-		<h2>Other users not in your friend list:</h2>
-		<table>
-				<tr>
-					<th>Alias</th>
-					<th>Action</th>
-				</tr>
-				{% for user in friends %}
-					<tr>
-						<td><a href="/userprofile/{{user.id}}">{{user.alias}}</a></td>
-						<td><a href="/addFriend/{{user.id}}"><button>Add as a friend</button></a></td>
-					</tr>
-				{% endfor %}			
-			</table>
-			
+		<div class="container">
+			<div class="row">
+				<div id="friends-list">
+				<h4>Here is the list of your friends:</h4>
+				{% if error == False%}
+					<p>You don't have a friend yet</p>
+				{% else %}
+					<table class="bordered highlight centered">
+						<tr>
+							<th>Alias</th>
+							<th>Action</th>
+						</tr>
+						{% for user in current_user.friends.all%}					
+						<tr>
+							<td>{{user.alias}}</td>
+							<td>
+								<a href="/userprofile/{{user.id}}" class="waves-effect waves-light orange btn">view profile</a>
+								<a href="/removeFriend/{{user.id}}" class="waves-effect waves-light red btn">remove as a friend</a>
+							</td>
+						</tr>
+						{%endfor%}
+					</table>
+				{% endif %}			
+					
+				</div>
+			</div>
+			<div class="row">
+				<div id="not-friends">
+				<h4>Other users not in your friend list:</h4>
+				<table class="bordered highlight centered">
+						<tr>
+							<th>Alias</th>
+							<th>Action</th>
+						</tr>
+						{% for user in friends %}
+							<tr>
+								<td><a href="/userprofile/{{user.id}}">{{user.alias}}</a></td>
+								<td><a href="/addFriend/{{user.id}}"><button class="waves-effect waves-light btn">Add as a friend</button></a></td>
+							</tr>
+						{% endfor %}			
+					</table>
+					
+				</div>
+			</div>
 		</div>
 
 	</body>

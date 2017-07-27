@@ -73,7 +73,7 @@ def createUser(request):
 			hashed_pw = bcrypt.hashpw(request.POST.get('password').encode(), bcrypt.gensalt())
 			user = User.objects.create(
 				name = request.POST.get('name'),
-				alias = request.POST.get('name'),
+				alias = request.POST.get('alias'),
 				email = request.POST.get('email'),
 				password = hashed_pw,
 				dateofbirth = dob_coverted
